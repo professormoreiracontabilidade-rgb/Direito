@@ -3,116 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <title>Quiz Direito para o CFC</title>
+
 <style>
 body{
   font-family: Arial, sans-serif;
-  background:#eef4ff;
+  background: linear-gradient(135deg,#fff1f1,#eef4ff);
   margin:0;
   padding:20px;
 }
+
 .container{
-  max-width:1000px;
+  max-width:900px;
   margin:auto;
 }
-h1,h2{
-  text-align:center;
-}
+
 .header{
-  background:#0b3d91;
+  background:linear-gradient(135deg,#8b0000,#d60000,#ff4d4d);
   color:white;
   padding:25px;
-  border-radius:18px;
-  margin-bottom:20px;
-}
-.botoes{
+  border-radius:22px;
   text-align:center;
-  margin:20px 0;
+  margin-bottom:25px;
+  box-shadow:0 8px 20px #0003;
 }
-button{
-  background:#0b3d91;
-  color:white;
-  border:none;
-  padding:12px 18px;
-  margin:6px;
-  border-radius:10px;
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:22px;
+  box-shadow:0 8px 25px #0002;
+  min-height:520px;
+  page-break-after:always;
+}
+
+h3{
+  color:#8b0000;
+  line-height:1.5;
+}
+
+.alternativa{
+  background:#fff3f3;
+  border:1px solid #ffc1c1;
+  margin:12px 0;
+  padding:14px;
+  border-radius:14px;
   cursor:pointer;
   font-weight:bold;
 }
-button:hover{
-  background:#06275f;
-}
-.card{
-  background:white;
-  padding:20px;
-  margin-bottom:18px;
-  border-radius:16px;
-  box-shadow:0 4px 12px #0002;
-  page-break-inside:avoid;
-}
-.alternativa{
-  display:block;
-  background:#f1f6ff;
-  margin:8px 0;
-  padding:10px;
-  border-radius:10px;
-  cursor:pointer;
-  border:1px solid #c9d8f2;
-}
+
 .alternativa:hover{
-  background:#dfeaff;
+  background:#ffe0e0;
 }
+
 .correta{
-  background:#d4f8d4!important;
-  border-color:#2e9d2e;
+  background:#d8ffd8!important;
+  border-color:#20a020;
 }
+
 .errada{
-  background:#ffd6d6!important;
-  border-color:#cc3333;
+  background:#ffd1d1!important;
+  border-color:#cc0000;
 }
+
 .resposta{
   display:none;
   background:#fff7d6;
-  padding:12px;
-  border-left:6px solid #f4b400;
-  border-radius:10px;
-  margin-top:12px;
+  border-left:6px solid #d60000;
+  padding:15px;
+  border-radius:12px;
+  margin-top:20px;
+  line-height:1.5;
 }
+
 .exibir .resposta{
   display:block;
 }
+
+.botoes{
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+button{
+  background:linear-gradient(135deg,#8b0000,#d60000,#ff4d4d);
+  color:white;
+  border:none;
+  padding:14px 22px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:15px;
+  box-shadow:0 5px 14px #0003;
+}
+
+button:hover{
+  transform:scale(1.04);
+}
+
 .score{
   text-align:center;
   font-size:20px;
   font-weight:bold;
-  margin:20px;
+  margin-bottom:20px;
+  color:#8b0000;
 }
+
+.contador{
+  text-align:center;
+  margin-bottom:15px;
+  font-weight:bold;
+  color:#555;
+}
+
 @media print{
-  body{background:white;}
-  .botoes,.score{display:none;}
-  .card{box-shadow:none;border:1px solid #ccc;}
-  .sem-resposta .resposta{display:none!important;}
-  .com-resposta .resposta{display:block!important;}
+  body{
+    background:white;
+  }
+
+  .header,.score,.contador,.botoes-navegacao{
+    display:none;
+  }
+
+  .card{
+    box-shadow:none;
+    border:1px solid #ccc;
+    min-height:auto;
+  }
+
+  .sem-resposta .resposta{
+    display:none!important;
+  }
+
+  .com-resposta .resposta{
+    display:block!important;
+  }
 }
 </style>
 </head>
 
 <body>
-<div class="container" id="areaQuiz">
+
+<div class="container">
 
 <div class="header">
-<h1>CURSO DE CONTABILIDADE PROFESSOR MOREIRA</h1>
-<h2>Quiz Dinâmico – Direito para o CFC</h2>
-<p style="text-align:center;">Clique nas alternativas para responder. Ao final, imprima com ou sem gabarito.</p>
-</div>
-
-<div class="botoes">
-<button onclick="imprimirComResposta()">📄 PDF para imprimir COM respostas</button>
-<button onclick="imprimirSemResposta()">📄 PDF para imprimir SEM respostas</button>
-<button onclick="mostrarTodas()">👁️ Mostrar todas as respostas</button>
-<button onclick="reiniciar()">🔄 Reiniciar Quiz</button>
+  <h1>CURSO DE CONTABILIDADE PROFESSOR MOREIRA</h1>
+  <h2>Quiz Dinâmico – Direito para o CFC</h2>
+  <p>Uma questão por página • Navegação com setas • Impressão com ou sem gabarito</p>
 </div>
 
 <div class="score" id="score">Pontuação: 0 / 15</div>
+<div class="contador" id="contador"></div>
 
 <div id="quiz"></div>
 
@@ -136,113 +179,128 @@ r:"Gabarito: D. Pela Lei nº 12.506/2011, o aviso prévio é de 30 dias mais 3 d
 q:"03. A sociedade Delta vende livros. Sobre os tributos que deve recolher, o contador respondeu corretamente que Delta:",
 a:["A) não recolheria nenhum tributo.","B) somente recolheria impostos.","C) recolheria taxas.","D) somente recolheria contribuições de melhoria."],
 c:2,
-r:"Gabarito: C. Livros possuem imunidade de impostos, mas isso não elimina a cobrança de taxas, que podem decorrer do poder de polícia ou de serviços públicos específicos."
+r:"Gabarito: C. Livros possuem imunidade de impostos, mas isso não elimina a cobrança de taxas."
 },
 {
 q:"04. João foi cobrado por associação de moradores, embora nunca tenha se associado. É correto afirmar que:",
 a:["A) a associação é obrigatória e o débito é devido.","B) cabe a João decidir se irá se associar, logo o débito é indevido.","C) se autorizada pelo Município, a associação é obrigatória.","D) associações não podem cobrar mensalidades."],
 c:1,
-r:"Gabarito: B. A Constituição garante liberdade de associação. Ninguém é obrigado a se associar ou permanecer associado. Benefício indireto não gera obrigação de pagar."
+r:"Gabarito: B. A Constituição garante liberdade de associação. Ninguém é obrigado a se associar."
 },
 {
 q:"05. A empresa Alfa deseja fornecer móveis ao Estado Beta. Foi corretamente informada de que:",
 a:["A) contratos do Estado seguem sempre o direito privado.","B) todo contrato do Estado deve ser antecedido de licitação, sem exceção.","C) ressalvadas as exceções legais, contrato administrativo exige licitação.","D) licitação só ocorre quando a autoridade quiser."],
 c:2,
-r:"Gabarito: C. A licitação é regra para contratação pública, mas há exceções legais, como dispensa e inexigibilidade."
+r:"Gabarito: C. A licitação é regra para contratação pública, salvo hipóteses legais de dispensa ou inexigibilidade."
 },
 {
 q:"06. Sobre previdência e assistência social, é correto afirmar que:",
 a:["A) ambas têm caráter necessariamente contributivo.","B) a assistência social assegura benefícios independentemente de contribuição.","C) a assistência social se confunde com previdência pública.","D) assistência social é uma forma de previdência social."],
 c:1,
-r:"Gabarito: B. Previdência social é contributiva. Assistência social é não contributiva e prestada a quem dela necessitar."
+r:"Gabarito: B. Previdência é contributiva; assistência social é não contributiva."
 },
 {
-q:"07. João quer saber sobre a renúncia à prescrição proposta por Pedro. Segundo o Código Civil, essa renúncia:",
+q:"07. Segundo o Código Civil, a renúncia à prescrição:",
 a:["A) não é admitida.","B) deve ser sempre expressa.","C) só pode ser realizada depois que a prescrição se consumar.","D) pode ocorrer antes ou depois da prescrição."],
 c:2,
-r:"Gabarito: C. A renúncia à prescrição só pode ocorrer depois de consumada, podendo ser expressa ou tácita."
+r:"Gabarito: C. A renúncia à prescrição só pode ocorrer depois de consumada."
 },
 {
-q:"08. João e Maria faleceram no mesmo acidente, sem possibilidade de saber quem morreu primeiro. Presume-se que:",
+q:"08. João e Maria faleceram no mesmo acidente, sem saber quem morreu primeiro. Presume-se que:",
 a:["A) o mais velho faleceu primeiro.","B) o mais jovem faleceu primeiro.","C) faleceram ao mesmo tempo.","D) quem teve inventário aberto antes faleceu primeiro."],
 c:2,
-r:"Gabarito: C. Trata-se de comoriência: quando não se sabe a ordem das mortes, presume-se morte simultânea."
+r:"Gabarito: C. Trata-se de comoriência: presume-se morte simultânea."
 },
 {
-q:"09. Decisão de órgão colegiado administrativo com eficácia normativa, salvo disposição em contrário, entra em vigor:",
+q:"09. Decisão administrativa com eficácia normativa entra em vigor, salvo disposição contrária:",
 a:["A) na data da publicação.","B) trinta dias após a publicação.","C) noventa dias após a publicação.","D) no exercício financeiro seguinte."],
 c:1,
-r:"Gabarito: B. Pelo CTN, atos normativos tributários entram em vigor 30 dias após a publicação, salvo disposição em contrário."
+r:"Gabarito: B. Pelo CTN, atos normativos tributários entram em vigor 30 dias após a publicação."
 },
 {
-q:"10. São princípios da Administração Pública: I. legalidade; II. moralidade; III. livre concorrência; IV. publicidade. Estão corretos:",
+q:"10. São princípios da Administração Pública: I. legalidade; II. moralidade; III. livre concorrência; IV. publicidade.",
 a:["A) I e II, apenas.","B) II, III e IV, apenas.","C) I, II e IV, apenas.","D) I, II, III e IV."],
 c:2,
-r:"Gabarito: C. Legalidade, moralidade e publicidade integram o LIMPE. Livre concorrência é princípio da ordem econômica."
+r:"Gabarito: C. Legalidade, moralidade e publicidade fazem parte do LIMPE. Livre concorrência é princípio da ordem econômica."
 },
 {
 q:"11. Sobre limitações ao poder de tributar, assinale a correta:",
 a:["A) Noventena não se aplica às contribuições sociais.","B) Legalidade exige sempre lei complementar.","C) Isonomia veda tratamento desigual a contribuintes em situação equivalente.","D) Irretroatividade impede até lei interpretativa."],
 c:2,
-r:"Gabarito: C. A isonomia tributária garante tratamento igual aos contribuintes em situação equivalente e veda distinção por ocupação profissional ou função."
+r:"Gabarito: C. A isonomia tributária garante tratamento igual aos contribuintes em situação equivalente."
 },
 {
-q:"12. Sobre obrigação tributária e tributos, assinale a correta:",
+q:"12. Sobre obrigação tributária, assinale a correta:",
 a:["A) ISS e ICMS são ambos de competência estadual.","B) Obrigação principal é pagar; obrigação acessória envolve deveres instrumentais.","C) IRPJ é tributo indireto.","D) Fato gerador do ICMS é o lucro."],
 c:1,
-r:"Gabarito: B. Obrigação principal envolve pagamento de tributo ou penalidade. Obrigação acessória envolve deveres como emitir nota, declarar e escriturar."
+r:"Gabarito: B. Obrigação principal é pagar; obrigação acessória envolve deveres como declarar, emitir nota e escriturar."
 },
 {
-q:"13. No art. 5º da Lei nº 14.133/2021, são princípios expressos: I. impessoalidade; II. transparência; III. racionalidade econômica; IV. probidade administrativa.",
+q:"13. No art. 5º da Lei nº 14.133/2021, são princípios expressos:",
 a:["A) I e IV, apenas.","B) II e III, apenas.","C) I, II e IV, apenas.","D) I, II, III e IV."],
 c:2,
-r:"Gabarito: C. Impessoalidade, transparência e probidade administrativa estão expressamente previstos. Racionalidade econômica não está expressamente listada."
+r:"Gabarito: C. Impessoalidade, transparência e probidade administrativa estão previstos. Racionalidade econômica não está expressamente listada."
 },
 {
 q:"14. Segundo o CTN, tributo é:",
-a:["A) prestação pecuniária voluntária, instituída por medida provisória.","B) sanção de ato ilícito cobrada compulsoriamente.","C) prestação em bens, instituída por qualquer ato normativo.","D) prestação pecuniária compulsória, em moeda ou equivalente, que não seja sanção de ato ilícito, instituída em lei e cobrada por atividade plenamente vinculada."],
+a:["A) prestação pecuniária voluntária.","B) sanção de ato ilícito.","C) prestação em bens instituída por qualquer ato normativo.","D) prestação pecuniária compulsória, em moeda ou equivalente, que não seja sanção de ato ilícito, instituída em lei e cobrada mediante atividade plenamente vinculada."],
 c:3,
-r:"Gabarito: D. É a definição do art. 3º do CTN: compulsório, em moeda ou equivalente, não é penalidade, instituído por lei e cobrado por atividade plenamente vinculada."
+r:"Gabarito: D. Essa é a definição do art. 3º do CTN."
 },
 {
 q:"15. Segundo a LC nº 123/2006, os limites de receita bruta anual são:",
 a:["A) ME até R$ 120.000,00 e EPP até R$ 1.200.000,00.","B) ME até R$ 360.000,00 e EPP acima de R$ 360.000,00 até R$ 4.800.000,00.","C) ME até R$ 81.000,00 e EPP até R$ 4.800.000,00.","D) limites fixados anualmente por decreto."],
 c:1,
-r:"Gabarito: B. Microempresa: receita bruta anual igual ou inferior a R$ 360.000,00. Empresa de Pequeno Porte: superior a R$ 360.000,00 e igual ou inferior a R$ 4.800.000,00."
+r:"Gabarito: B. ME: até R$ 360.000,00. EPP: acima de R$ 360.000,00 até R$ 4.800.000,00."
 }
 ];
 
+let atual = 0;
 let pontos = 0;
 let respondidas = Array(questoes.length).fill(false);
 
-function carregarQuiz(){
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = "";
-  questoes.forEach((item, i)=>{
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
+function carregarQuestao(){
+  const item = questoes[atual];
+  document.getElementById("contador").innerText = `Questão ${atual + 1} de ${questoes.length}`;
+
+  document.getElementById("quiz").innerHTML = `
+    <div class="card" id="card">
       <h3>${item.q}</h3>
+
       ${item.a.map((alt,j)=>`
-        <div class="alternativa" onclick="responder(${i},${j},this)">
+        <div class="alternativa" onclick="responder(${j}, this)">
           ${alt}
-        </div>`).join("")}
+        </div>
+      `).join("")}
+
       <div class="resposta">${item.r}</div>
-    `;
-    quiz.appendChild(div);
-  });
+
+      <div class="botoes botoes-navegacao">
+        <button onclick="voltar()">⬅️ Voltar</button>
+        <button onclick="mostrarResposta()">👁️ Mostrar resposta</button>
+        <button onclick="proxima()">Próxima ➡️</button>
+        <button onclick="imprimirComResposta()">📄 PDF com resposta</button>
+        <button onclick="imprimirSemResposta()">📄 PDF sem resposta</button>
+      </div>
+    </div>
+  `;
 }
 
-function responder(i,j,el){
-  if(respondidas[i]) return;
-  respondidas[i] = true;
-  const card = el.parentElement;
+function responder(j, el){
+  if(respondidas[atual]) return;
+
+  respondidas[atual] = true;
+
+  const card = document.getElementById("card");
   const alternativas = card.querySelectorAll(".alternativa");
+
   alternativas.forEach((alt,index)=>{
-    if(index === questoes[i].c) alt.classList.add("correta");
-    if(index === j && j !== questoes[i].c) alt.classList.add("errada");
+    if(index === questoes[atual].c) alt.classList.add("correta");
+    if(index === j && j !== questoes[atual].c) alt.classList.add("errada");
   });
-  if(j === questoes[i].c) pontos++;
+
+  if(j === questoes[atual].c) pontos++;
+
   card.classList.add("exibir");
   atualizarScore();
 }
@@ -251,31 +309,59 @@ function atualizarScore(){
   document.getElementById("score").innerText = `Pontuação: ${pontos} / ${questoes.length}`;
 }
 
-function mostrarTodas(){
-  document.querySelectorAll(".card").forEach(card=>card.classList.add("exibir"));
+function mostrarResposta(){
+  document.getElementById("card").classList.add("exibir");
 }
 
-function reiniciar(){
-  pontos = 0;
-  respondidas = Array(questoes.length).fill(false);
-  atualizarScore();
-  carregarQuiz();
+function proxima(){
+  if(atual < questoes.length - 1){
+    atual++;
+    carregarQuestao();
+  }
+}
+
+function voltar(){
+  if(atual > 0){
+    atual--;
+    carregarQuestao();
+  }
 }
 
 function imprimirComResposta(){
   document.body.classList.remove("sem-resposta");
   document.body.classList.add("com-resposta");
+  gerarTodasParaImpressao();
   window.print();
+  carregarQuestao();
 }
 
 function imprimirSemResposta(){
   document.body.classList.remove("com-resposta");
   document.body.classList.add("sem-resposta");
+  gerarTodasParaImpressao();
   window.print();
+  carregarQuestao();
 }
 
-carregarQuiz();
+function gerarTodasParaImpressao(){
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+
+  questoes.forEach((item,i)=>{
+    quiz.innerHTML += `
+      <div class="card">
+        <h3>${item.q}</h3>
+        ${item.a.map(alt=>`<div class="alternativa">${alt}</div>`).join("")}
+        <div class="resposta">${item.r}</div>
+      </div>
+    `;
+  });
+}
+
+carregarQuestao();
 </script>
 
 </body>
 </html>
+  
+
