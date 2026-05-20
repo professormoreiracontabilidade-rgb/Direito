@@ -6,7 +6,6 @@
 <title>Quiz Direito para o CFC</title>
 
 <style>
-
 body{
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg,#fff0f0,#eef4ff);
@@ -15,7 +14,7 @@ body{
 }
 
 .container{
-    max-width:900px;
+    max-width:950px;
     margin:auto;
 }
 
@@ -42,6 +41,36 @@ body{
     font-weight:bold;
     margin-bottom:20px;
     color:#444;
+}
+
+.painel{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.12);
+}
+
+.painel h3{
+    text-align:center;
+    color:#8b0000;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#8b0000;
+    color:white;
+    padding:10px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
 }
 
 .card{
@@ -111,10 +140,10 @@ button{
     background: linear-gradient(135deg,#8b0000,#d60000,#ff4d4d);
     color:white;
     border:none;
-    padding:14px 22px;
-    border-radius:15px;
+    padding:12px 20px;
+    border-radius:14px;
     cursor:pointer;
-    font-size:15px;
+    font-size:14px;
     font-weight:bold;
     box-shadow:0 5px 15px rgba(0,0,0,0.2);
     transition:0.3s;
@@ -125,7 +154,6 @@ button:hover{
 }
 
 @media print{
-
     body{
         background:white;
     }
@@ -133,6 +161,7 @@ button:hover{
     .header,
     .score,
     .contador,
+    .painel,
     .botoes-navegacao{
         display:none;
     }
@@ -151,7 +180,6 @@ button:hover{
         display:block!important;
     }
 }
-
 </style>
 </head>
 
@@ -162,23 +190,39 @@ button:hover{
 <div class="header">
 <h1>CURSO DE CONTABILIDADE PROFESSOR MOREIRA</h1>
 <h2>Quiz Dinâmico – Direito para o CFC</h2>
-<p>Uma questão por página • Navegação dinâmica • PDF com ou sem respostas</p>
+<p>Uma questão por página • Painel de acertos e erros • PDF com ou sem respostas</p>
 </div>
 
 <div class="score" id="score">Pontuação: 0 / 15</div>
-
 <div class="contador" id="contador"></div>
+
+<div class="painel">
+<h3>📋 Painel de Questões</h3>
+<table>
+<thead>
+<tr>
+<th>Questão</th>
+<th>Status</th>
+<th>Ir para</th>
+</tr>
+</thead>
+<tbody id="tabelaQuestoes"></tbody>
+</table>
+</div>
 
 <div id="quiz"></div>
 
 </div>
 
 <script>
-
 const questoes = [
 
 {
-q:"01. João comunicou a Maria que: I. a Lei nº X, editada pela União, disciplinou as situações em que poderia ocorrer a renúncia a determinada posição jurídica; II. a renúncia, para ser válida, deveria observar os estritos termos legais; III. Pedro renunciou a um direito que deixou de integrar a sua esfera jurídica e passou a integrar a esfera jurídica de Maria. Nas situações I, II e III, estamos perante, respectivamente:",
+q:`01. João comunicou a Maria que:<br><br>
+I. a Lei nº X, editada pela União, disciplinou as situações em que poderia ocorrer a renúncia a determinada posição jurídica;<br>
+II. a renúncia, para ser válida, deveria observar os estritos termos legais;<br>
+III. Pedro renunciou a um direito que deixou de integrar a sua esfera jurídica e passou a integrar a esfera jurídica de Maria.<br><br>
+Nas situações I, II e III, estamos perante, respectivamente:`,
 a:[
 "A) poder estatal, direito positivo e direito natural.",
 "B) direito objetivo, direito natural e faculdade jurídica.",
@@ -198,11 +242,11 @@ a:[
 "D) O aviso prévio será de 39 dias."
 ],
 c:3,
-r:"Gabarito: D. O aviso prévio proporcional soma 3 dias por ano completo de serviço."
+r:"Gabarito: D. O aviso prévio proporcional soma 3 dias por ano completo de serviço. Pedro tem 3 anos: 30 + 9 = 39 dias."
 },
 
 {
-q:"03. A sociedade Delta vende livros. Sobre os tributos que deve recolher:",
+q:"03. A sociedade Delta vende livros. Sobre os tributos que deve recolher, o contador respondeu corretamente que Delta:",
 a:[
 "A) não recolheria nenhum tributo.",
 "B) somente recolheria impostos.",
@@ -214,115 +258,127 @@ r:"Gabarito: C. Livros possuem imunidade de impostos, mas continuam sujeitos a t
 },
 
 {
-q:"04. João foi cobrado por associação de moradores sem nunca ter se associado. É correto afirmar:",
+q:"04. João foi cobrado por associação de moradores, embora nunca tenha se associado. É correto afirmar que:",
 a:[
-"A) associação obrigatória.",
-"B) João decide se quer se associar.",
-"C) Município pode obrigar associação.",
-"D) associações não podem cobrar mensalidades."
+"A) como é obrigatória a associação de João, o débito é devido.",
+"B) ainda que seja beneficiado pelos atos da associação, cabe a João decidir se irá se associar, logo o débito é indevido.",
+"C) caso a associação tenha sido criada com autorização do Município, a associação é obrigatória.",
+"D) como as associações não têm fins lucrativos, é vedada a cobrança de mensalidades."
 ],
 c:1,
-r:"Gabarito: B. A Constituição garante liberdade de associação."
+r:"Gabarito: B. A Constituição garante liberdade de associação. Ninguém é obrigado a se associar ou permanecer associado."
 },
 
 {
 q:"05. A empresa Alfa deseja fornecer móveis ao Estado Beta. Foi corretamente informada de que:",
 a:[
-"A) contratos seguem sempre o direito privado.",
-"B) todo contrato exige licitação sem exceção.",
-"C) ressalvadas as exceções legais, contrato administrativo exige licitação.",
-"D) licitação só ocorre quando houver interesse."
+"A) os contratos celebrados pelo Estado sempre seguem os mesmos parâmetros dos contratos de direito privado.",
+"B) todo contrato celebrado pelo Estado deve ser antecedido de licitação.",
+"C) ressalvadas as exceções legais, eventual celebração de contrato administrativo exige licitação.",
+"D) em razão do princípio da eficiência, a licitação é reservada às situações em que a autoridade identifique competição."
 ],
 c:2,
-r:"Gabarito: C. Licitação é regra; dispensa e inexigibilidade são exceções."
+r:"Gabarito: C. Licitação é regra; dispensa e inexigibilidade são exceções legais."
 },
 
 {
-q:"06. Sobre previdência e assistência social:",
+q:"06. Sobre previdência e assistência social, é correto afirmar que:",
 a:[
-"A) ambas são contributivas.",
-"B) assistência social independe de contribuição.",
-"C) assistência se confunde com previdência.",
-"D) assistência é espécie de previdência."
+"A) ambas oferecem direitos prestacionais e têm caráter necessariamente contributivo.",
+"B) a assistência social assegura benefícios independentemente de contribuição.",
+"C) a assistência social se aproxima da previdência pública, mas se diferencia da previdência privada.",
+"D) a assistência social é uma das formas de expressão da previdência social."
 ],
 c:1,
-r:"Gabarito: B. Assistência social é não contributiva."
+r:"Gabarito: B. Previdência social é contributiva. Assistência social é não contributiva."
 },
 
 {
 q:"07. Segundo o Código Civil, a renúncia à prescrição:",
 a:[
-"A) não é admitida.",
-"B) deve ser sempre expressa.",
-"C) só pode ocorrer depois da consumação.",
-"D) pode ocorrer antes ou depois."
+"A) não é admitida pela sistemática legal.",
+"B) deve ser expressa, sendo vedada a renúncia tácita.",
+"C) só pode ser realizada depois que a prescrição se consumar.",
+"D) pode ser realizada antes ou após a consumação da prescrição."
 ],
 c:2,
-r:"Gabarito: C. Só pode ocorrer após a prescrição consumada."
+r:"Gabarito: C. A renúncia à prescrição só pode ocorrer depois de consumada, podendo ser expressa ou tácita."
 },
 
 {
-q:"08. João e Maria morreram no mesmo acidente sem saber quem faleceu primeiro:",
+q:"08. João e Maria faleceram no mesmo acidente, sem possibilidade de saber quem morreu primeiro. Presume-se que:",
 a:[
 "A) o mais velho faleceu primeiro.",
 "B) o mais jovem faleceu primeiro.",
 "C) faleceram ao mesmo tempo.",
-"D) depende do inventário."
+"D) o que teve o inventário aberto antes faleceu primeiro."
 ],
 c:2,
-r:"Gabarito: C. Trata-se de comoriência."
+r:"Gabarito: C. Trata-se de comoriência: quando não se sabe a ordem das mortes, presume-se morte simultânea."
 },
 
 {
-q:"09. Decisão administrativa com eficácia normativa entra em vigor:",
+q:"09. Decisão de órgão colegiado administrativo com eficácia normativa, salvo disposição em contrário, entra em vigor:",
 a:[
-"A) na publicação.",
-"B) 30 dias após publicação.",
-"C) 90 dias após publicação.",
-"D) exercício financeiro seguinte."
+"A) na data da sua publicação.",
+"B) trinta dias após a data da sua publicação.",
+"C) noventa dias após a data da sua publicação.",
+"D) no exercício financeiro seguinte à data da sua publicação."
 ],
 c:1,
-r:"Gabarito: B. Regra do CTN."
+r:"Gabarito: B. Pelo CTN, atos normativos tributários entram em vigor 30 dias após a publicação, salvo disposição em contrário."
 },
 
 {
-q:"10. São princípios da Administração Pública:",
+q:`10. Avalie se os princípios da Administração Pública incluem:<br><br>
+I. a legalidade;<br>
+II. a moralidade;<br>
+III. a livre concorrência;<br>
+IV. a publicidade.<br><br>
+São de fato princípios da Administração Pública os itens:`,
 a:[
-"A) I e II.",
-"B) II, III e IV.",
-"C) I, II e IV.",
+"A) I e II, apenas.",
+"B) II, III e IV, apenas.",
+"C) I, II e IV, apenas.",
 "D) I, II, III e IV."
 ],
 c:2,
-r:"Gabarito: C. Legalidade, moralidade e publicidade."
+r:"Gabarito: C. Legalidade, moralidade e publicidade são princípios da Administração Pública. Livre concorrência é princípio da ordem econômica, não da Administração Pública."
 },
 
 {
-q:"11. Sobre limitações ao poder de tributar:",
+q:"11. Entre as limitações ao poder de tributar, assinale a afirmativa correta:",
 a:[
-"A) Noventena não vale para contribuições sociais.",
-"B) Legalidade exige lei complementar.",
-"C) Isonomia garante igualdade.",
-"D) Irretroatividade impede lei interpretativa."
+"A) O princípio da anterioridade nonagesimal estabelece que nenhum tributo pode ser cobrado antes de 90 dias, exceto contribuições sociais, que podem ser exigidas imediatamente.",
+"B) O princípio da legalidade tributária determina que nenhum tributo pode ser instituído ou majorado sem lei complementar.",
+"C) O princípio da isonomia garante tratamento igualitário a todos que se encontram em situação equivalente, vedada distinção em razão de ocupação profissional ou função.",
+"D) O princípio da irretroatividade veda a aplicação da lei a ato ou fato pretérito, ainda que a lei seja expressamente interpretativa."
 ],
 c:2,
-r:"Gabarito: C. Princípio da isonomia tributária."
+r:"Gabarito: C. A isonomia tributária garante tratamento igual aos contribuintes em situação equivalente."
 },
 
 {
-q:"12. Sobre obrigação tributária:",
+q:"12. Sobre obrigação tributária e tributo, assinale a afirmativa correta:",
 a:[
-"A) ISS e ICMS são estaduais.",
-"B) Obrigação principal é pagar; acessória envolve deveres instrumentais.",
-"C) IRPJ é tributo indireto.",
-"D) Lucro é fato gerador do ICMS."
+"A) O ISS e o ICMS são impostos de mesma competência tributária, pois ambos são devidos aos Estados.",
+"B) A obrigação tributária principal consiste no pagamento do tributo devido, enquanto a obrigação acessória está relacionada a deveres instrumentais.",
+"C) O IRPJ é classificado como tributo indireto.",
+"D) O fato gerador do ICMS ocorre quando a empresa apura seus lucros."
 ],
 c:1,
-r:"Gabarito: B."
+r:"Gabarito: B. Obrigação principal é pagar; obrigação acessória envolve deveres como emitir nota, declarar e escriturar."
 },
 
 {
-q:"13. Para o contador que atua no setor público ou na fiscalização de contratos administrativos, o conhecimento da Lei nº 14.133, de 1º de abril de 2021, é fundamental para a avaliação da legalidade e conformidade dos gastos públicos. O Art. 5º dessa Lei elenca diversos princípios que devem guiar a atuação das Administrações Públicas diretas, autárquicas e fundacionais da União, dos Estados, do Distrito Federal e dos Municípios. Com base no texto legal, avalie os seguintes princípios: I. Impessoalidade; II. Transparência; III. Racionalidade econômica; IV. Probidade administrativa. Estão expressamente listados no Art. 5º da Lei os princípios:",
+q:`13. Para o contador que atua no setor público ou na fiscalização de contratos administrativos, o conhecimento da Lei nº 14.133, de 1º de abril de 2021, é fundamental para a avaliação da legalidade e conformidade dos gastos públicos.<br><br>
+O Art. 5º dessa Lei elenca diversos princípios que devem guiar a atuação das Administrações Públicas diretas, autárquicas e fundacionais da União, dos Estados, do Distrito Federal e dos Municípios.<br><br>
+Com base no texto legal, avalie os seguintes princípios:<br><br>
+I. Impessoalidade;<br>
+II. Transparência;<br>
+III. Racionalidade econômica;<br>
+IV. Probidade administrativa.<br><br>
+Estão expressamente listados no Art. 5º da Lei os princípios:`,
 a:[
 "A) I e IV, apenas.",
 "B) II e III, apenas.",
@@ -330,31 +386,31 @@ a:[
 "D) I, II, III e IV."
 ],
 c:2,
-r:"Gabarito: C. Impessoalidade, transparência e probidade administrativa estão expressamente previstos na Lei nº 14.133/2021."
+r:"Gabarito: C. Impessoalidade, transparência e probidade administrativa estão expressamente previstos no Art. 5º da Lei nº 14.133/2021. Racionalidade econômica não está expressamente listada."
 },
 
 {
-q:"14. Segundo o CTN, tributo é:",
+q:"14. De acordo com o Código Tributário Nacional, assinale a opção que define corretamente o tributo:",
 a:[
-"A) prestação voluntária.",
-"B) sanção de ato ilícito.",
-"C) prestação em bens.",
-"D) prestação pecuniária compulsória instituída em lei."
+"A) Tributo é toda prestação pecuniária voluntária, em moeda ou cujo valor nela se possa exprimir.",
+"B) Tributo é toda sanção de ato ilícito, cobrada compulsoriamente em bens ou serviços.",
+"C) Tributo é toda prestação pecuniária compulsória, em bens ou cujo valor nela se possa exprimir.",
+"D) Tributo é toda prestação pecuniária compulsória, em moeda ou cujo valor nela se possa exprimir, que não constitua sanção de ato ilícito, instituída em lei e cobrada mediante atividade administrativa plenamente vinculada."
 ],
 c:3,
-r:"Gabarito: D."
+r:"Gabarito: D. Essa é a definição do art. 3º do CTN."
 },
 
 {
-q:"15. Segundo a LC nº 123/2006:",
+q:"15. Segundo a LC nº 123/2006, os limites de receita bruta anual são:",
 a:[
-"A) ME até R$120 mil.",
-"B) ME até R$360 mil e EPP até R$4,8 milhões.",
-"C) MEI e EPP possuem mesmo limite.",
-"D) limites definidos por decreto."
+"A) ME até R$ 120.000,00 e EPP até R$ 1.200.000,00.",
+"B) ME até R$ 360.000,00 e EPP acima de R$ 360.000,00 até R$ 4.800.000,00.",
+"C) ME até R$ 81.000,00 e EPP até R$ 4.800.000,00.",
+"D) limites fixados anualmente por decreto."
 ],
 c:1,
-r:"Gabarito: B."
+r:"Gabarito: B. Microempresa: até R$ 360.000,00. Empresa de Pequeno Porte: acima de R$ 360.000,00 até R$ 4.800.000,00."
 }
 
 ];
@@ -362,18 +418,16 @@ r:"Gabarito: B."
 let atual = 0;
 let pontos = 0;
 let respondidas = Array(questoes.length).fill(false);
+let respostasAluno = Array(questoes.length).fill(null);
 
 function carregarQuestao(){
-
     const q = questoes[atual];
 
     document.getElementById("contador").innerHTML =
     `Questão ${atual+1} de ${questoes.length}`;
 
     document.getElementById("quiz").innerHTML = `
-
     <div class="card" id="card">
-
         <h3>${q.q}</h3>
 
         ${q.a.map((alt,i)=>`
@@ -382,62 +436,91 @@ function carregarQuestao(){
             </div>
         `).join("")}
 
-        <div class="resposta">
-            ${q.r}
-        </div>
+        <div class="resposta">${q.r}</div>
 
         <div class="botoes botoes-navegacao">
-
             <button onclick="voltar()">⬅️ Voltar</button>
-
             <button onclick="mostrarResposta()">👁️ Mostrar Resposta</button>
-
             <button onclick="proxima()">Próxima ➡️</button>
-
             <button onclick="imprimirComResposta()">📄 PDF com Respostas</button>
-
             <button onclick="imprimirSemResposta()">📄 PDF sem Respostas</button>
-
+            <button onclick="reiniciar()">🔄 Reiniciar</button>
         </div>
-
     </div>
-
     `;
+
+    restaurarRespostaVisual();
+    atualizarTabela();
 }
 
 function responder(i,el){
-
     if(respondidas[atual]) return;
 
     respondidas[atual] = true;
+    respostasAluno[atual] = i;
 
+    if(i === questoes[atual].c){
+        pontos++;
+    }
+
+    marcarAlternativas();
+    document.getElementById("card").classList.add("exibir");
+
+    atualizarScore();
+    atualizarTabela();
+}
+
+function marcarAlternativas(){
     const card = document.getElementById("card");
     const alternativas = card.querySelectorAll(".alternativa");
 
     alternativas.forEach((alt,index)=>{
-
-        if(index===questoes[atual].c){
+        if(index === questoes[atual].c){
             alt.classList.add("correta");
         }
 
-        if(index===i && i!==questoes[atual].c){
+        if(index === respostasAluno[atual] && index !== questoes[atual].c){
             alt.classList.add("errada");
         }
-
     });
+}
 
-    if(i===questoes[atual].c){
-        pontos++;
+function restaurarRespostaVisual(){
+    if(respondidas[atual]){
+        marcarAlternativas();
+        document.getElementById("card").classList.add("exibir");
     }
-
-    card.classList.add("exibir");
-
-    atualizarScore();
 }
 
 function atualizarScore(){
     document.getElementById("score").innerHTML =
     `Pontuação: ${pontos} / ${questoes.length}`;
+}
+
+function atualizarTabela(){
+    const tabela = document.getElementById("tabelaQuestoes");
+    tabela.innerHTML = "";
+
+    questoes.forEach((q,i)=>{
+        let status = "⏳ Não respondida";
+
+        if(respondidas[i]){
+            status = respostasAluno[i] === questoes[i].c ? "✅ Certa" : "❌ Errada";
+        }
+
+        tabela.innerHTML += `
+        <tr>
+            <td>Questão ${i+1}</td>
+            <td>${status}</td>
+            <td><button onclick="irPara(${i})">Ir</button></td>
+        </tr>
+        `;
+    });
+}
+
+function irPara(numero){
+    atual = numero;
+    carregarQuestao();
 }
 
 function mostrarResposta(){
@@ -458,58 +541,48 @@ function voltar(){
     }
 }
 
+function reiniciar(){
+    atual = 0;
+    pontos = 0;
+    respondidas = Array(questoes.length).fill(false);
+    respostasAluno = Array(questoes.length).fill(null);
+    atualizarScore();
+    carregarQuestao();
+}
+
 function gerarTodas(){
-
     const quiz = document.getElementById("quiz");
-
     quiz.innerHTML = "";
 
-    questoes.forEach((q)=>{
-
+    questoes.forEach((q,i)=>{
         quiz.innerHTML += `
-
         <div class="card">
-
             <h3>${q.q}</h3>
-
-            ${q.a.map(a=>`
-                <div class="alternativa">${a}</div>
-            `).join("")}
-
+            ${q.a.map(a=>`<div class="alternativa">${a}</div>`).join("")}
             <div class="resposta">${q.r}</div>
-
         </div>
-
         `;
     });
 }
 
 function imprimirComResposta(){
-
     document.body.classList.remove("sem-resposta");
     document.body.classList.add("com-resposta");
-
     gerarTodas();
-
     window.print();
-
     carregarQuestao();
 }
 
 function imprimirSemResposta(){
-
     document.body.classList.remove("com-resposta");
     document.body.classList.add("sem-resposta");
-
     gerarTodas();
-
     window.print();
-
     carregarQuestao();
 }
 
 carregarQuestao();
-
+atualizarTabela();
 </script>
 
 </body>
